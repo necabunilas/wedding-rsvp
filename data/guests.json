@@ -1,0 +1,134 @@
+{
+  "guests": [
+    {
+      "id": "guest-001",
+      "name": "Juan Dela Cruz",
+      "email": "juan@example.com",
+      "seatsAllocated": 2
+    },
+    {
+      "id": "guest-002",
+      "name": "Maria Santos",
+      "email": "maria@example.com",
+      "seatsAllocated": 4
+    },
+    {
+      "id": "guest-003",
+      "name": "Pedro Reyes",
+      "email": "pedro@example.com",
+      "seatsAllocated": 1
+    },
+    {
+      "id": "guest-004",
+      "name": "Maria Clara",
+      "email": "mariaclara@example.com",
+      "seatsAllocated": 2
+    },
+    {
+      "id": "guest-005",
+      "name": "Mario Gonzales",
+      "email": "mario@example.com",
+      "seatsAllocated": 3
+    },
+    {
+      "id": "guest-006",
+      "name": "Jose Rizal",
+      "email": "jose@example.com",
+      "seatsAllocated": 2
+    },
+    {
+      "id": "guest-007",
+      "name": "Josefa Garcia",
+      "email": "josefa@example.com",
+      "seatsAllocated": 1
+    },
+    {
+      "id": "guest-008",
+      "name": "Ana Reyes",
+      "email": "ana@example.com",
+      "seatsAllocated": 2
+    },
+    {
+      "id": "guest-009",
+      "name": "Carlos Mendoza",
+      "email": "carlos@example.com",
+      "seatsAllocated": 3
+    },
+    {
+      "id": "guest-010",
+      "name": "Carmen Lopez",
+      "email": "carmen@example.com",
+      "seatsAllocated": 2
+    },
+    {
+      "id": "guest-011",
+      "name": "Roberto Cruz",
+      "email": "roberto@example.com",
+      "seatsAllocated": 4
+    },
+    {
+      "id": "guest-012",
+      "name": "Rosa Martinez",
+      "email": "rosa@example.com",
+      "seatsAllocated": 1
+    },
+    {
+      "id": "guest-013",
+      "name": "Miguel Aquino",
+      "email": "miguel@example.com",
+      "seatsAllocated": 2
+    },
+    {
+      "id": "guest-014",
+      "name": "Michelle Tan",
+      "email": "michelle@example.com",
+      "seatsAllocated": 3
+    },
+    {
+      "id": "guest-015",
+      "name": "Antonio Bautista",
+      "email": "antonio@example.com",
+      "seatsAllocated": 2
+    },
+    {
+      "id": "guest-016",
+      "name": "Angela Fernandez",
+      "email": "angela@example.com",
+      "seatsAllocated": 2
+    },
+    {
+      "id": "guest-017",
+      "name": "Luis Villanueva",
+      "email": "luis@example.com",
+      "seatsAllocated": 1
+    },
+    {
+      "id": "guest-018",
+      "name": "Lucia Ramos",
+      "email": "lucia@example.com",
+      "seatsAllocated": 2
+    },
+    {
+      "id": "guest-019",
+      "name": "Fernando Diaz",
+      "email": "fernando@example.com",
+      "seatsAllocated": 4
+    },
+    {
+      "id": "guest-020",
+      "name": "Fe Santos",
+      "email": "fe@example.com",
+      "seatsAllocated": 1
+    }
+  ],
+  "eventDetails": {
+    "coupleName": "Nic & Ban",
+    "date": "2026-06-20",
+    "time": "8:00 AM",
+    "venue": "Abbey of Transfiguration Church",
+    "address": "Malaybalay, Bukidnon",
+    "receptionVenue": "Ranchers Steakhouse",
+    "receptionAddress": "Malaybalay, Bukidnon",
+    "rsvpDeadline": "2026-04-20"
+  }
+}
