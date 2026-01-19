@@ -27,6 +27,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${playfair.variable} ${montserrat.variable}`}>
+      <head>
+        <link rel="preload" href="/music/background.mp3" as="audio" />
+      </head>
       <body className="min-h-screen bg-wedding-off-white font-sans antialiased">
         {children}
         <MusicPlayer />

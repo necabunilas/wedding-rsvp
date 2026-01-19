@@ -7,39 +7,36 @@ export default function MusicPlayer() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    audioRef.current = new Audio("/music/background.mp3");
-    audioRef.current.loop = true;
-    audioRef.current.volume = 0.3;
+    const audio = new Audio("/music/background.mp3");
+    audio.loop = true;
+    audio.volume = 0.3;
+    audio.preload = "auto";
+    audioRef.current = audio;
 
-    // Try to autoplay
-    const playAudio = () => {
-      if (audioRef.current) {
-        audioRef.current.play()
-          .then(() => setIsPlaying(true))
-          .catch(() => {
-            // Autoplay blocked - wait for user interaction
-            const handleInteraction = () => {
-              if (audioRef.current && !isPlaying) {
-                audioRef.current.play()
-                  .then(() => setIsPlaying(true))
-                  .catch(() => {});
-              }
-              document.removeEventListener("click", handleInteraction);
-              document.removeEventListener("touchstart", handleInteraction);
-            };
-            document.addEventListener("click", handleInteraction);
-            document.addEventListener("touchstart", handleInteraction);
-          });
-      }
+    // Play as soon as audio can play through
+    const handleCanPlay = () => {
+      audio.play()
+        .then(() => setIsPlaying(true))
+        .catch(() => {
+          // Autoplay blocked - wait for user interaction
+          const handleInteraction = () => {
+            audio.play()
+              .then(() => setIsPlaying(true))
+              .catch(() => {});
+            document.removeEventListener("click", handleInteraction);
+            document.removeEventListener("touchstart", handleInteraction);
+          };
+          document.addEventListener("click", handleInteraction);
+          document.addEventListener("touchstart", handleInteraction);
+        });
     };
 
-    playAudio();
+    audio.addEventListener("canplaythrough", handleCanPlay);
 
     return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current = null;
-      }
+      audio.removeEventListener("canplaythrough", handleCanPlay);
+      audio.pause();
+      audioRef.current = null;
     };
   }, []);
 
