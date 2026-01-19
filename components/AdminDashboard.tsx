@@ -71,9 +71,6 @@ export default function AdminDashboard({ guests }: AdminDashboardProps) {
               <th className="px-6 py-4 text-left text-xs font-medium text-wedding-gray uppercase tracking-wider">
                 Name
               </th>
-              <th className="px-6 py-4 text-left text-xs font-medium text-wedding-gray uppercase tracking-wider">
-                Email
-              </th>
               <th className="px-6 py-4 text-center text-xs font-medium text-wedding-gray uppercase tracking-wider">
                 Allocated
               </th>
@@ -95,9 +92,6 @@ export default function AdminDashboard({ guests }: AdminDashboardProps) {
             {filteredGuests.map((guest) => (
               <tr key={guest.id} className="hover:bg-wedding-gold/5 transition-colors">
                 <td className="px-6 py-4 text-sm font-medium text-wedding-charcoal">{guest.name}</td>
-                <td className="px-6 py-4 text-sm text-wedding-gray">
-                  {guest.email || "-"}
-                </td>
                 <td className="px-6 py-4 text-sm text-wedding-charcoal text-center font-medium">
                   {guest.seatsAllocated}
                 </td>

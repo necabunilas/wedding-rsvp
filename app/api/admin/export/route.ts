@@ -29,7 +29,6 @@ export async function GET() {
   // Prepare data for Excel
   const data = guests.map((guest) => ({
     Name: guest.name,
-    Email: guest.email || "",
     "Seats Allocated": guest.seatsAllocated,
     "Seats Confirmed": guest.seatsConfirmed ?? "",
     Status:
@@ -51,7 +50,6 @@ export async function GET() {
   // Set column widths
   worksheet["!cols"] = [
     { wch: 25 }, // Name
-    { wch: 30 }, // Email
     { wch: 15 }, // Seats Allocated
     { wch: 15 }, // Seats Confirmed
     { wch: 12 }, // Status
