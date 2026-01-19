@@ -3,6 +3,7 @@ import Link from "next/link";
 import { isAuthenticated } from "@/lib/auth";
 import { getGuestsWithRsvp, getGuests } from "@/lib/guests";
 import AdminDashboard from "@/components/AdminDashboard";
+import ClearRsvpsButton from "@/components/ClearRsvpsButton";
 
 export const dynamic = "force-dynamic";
 
@@ -64,7 +65,7 @@ export default async function AdminPage() {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex justify-center gap-4 mb-10">
+        <div className="flex flex-wrap justify-center gap-4 mb-10">
           <a
             href="/api/admin/export"
             className="px-6 py-3 bg-wedding-wine text-white rounded-xl hover:bg-wedding-gold transition-all duration-200 text-sm font-medium shadow-lg hover:shadow-xl"
@@ -77,6 +78,7 @@ export default async function AdminPage() {
           >
             View Site
           </Link>
+          <ClearRsvpsButton />
         </div>
 
         {error && (
