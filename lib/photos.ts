@@ -99,8 +99,8 @@ export async function savePhoto(
     mimeType: file.type,
   };
 
-  // Save metadata
-  if (isKvConfigured) {
+  // Save metadata (use same storage as files - if local files, use local JSON)
+  if (isBlobConfigured && isKvConfigured) {
     const { kv } = await import("@vercel/kv");
     await kv.set(`photo:${id}`, metadata);
     await kv.lpush("photo-ids", id);
@@ -115,7 +115,7 @@ export async function savePhoto(
 
 // Get all photos
 export async function getAllPhotos(): Promise<PhotoMetadata[]> {
-  if (isKvConfigured) {
+  if (isBlobConfigured && isKvConfigured) {
     const { kv } = await import("@vercel/kv");
     const ids = await kv.lrange<string>("photo-ids", 0, -1);
     const photos: PhotoMetadata[] = [];
@@ -135,7 +135,7 @@ export async function getAllPhotos(): Promise<PhotoMetadata[]> {
 
 // Get a single photo by ID
 export async function getPhotoById(id: string): Promise<PhotoMetadata | null> {
-  if (isKvConfigured) {
+  if (isBlobConfigured && isKvConfigured) {
     const { kv } = await import("@vercel/kv");
     return await kv.get<PhotoMetadata>(`photo:${id}`);
   } else {
@@ -170,7 +170,7 @@ export async function deletePhoto(id: string): Promise<boolean> {
   }
 
   // Delete metadata
-  if (isKvConfigured) {
+  if (isBlobConfigured && isKvConfigured) {
     const { kv } = await import("@vercel/kv");
     await kv.del(`photo:${id}`);
     await kv.lrem("photo-ids", 1, id);
@@ -185,7 +185,7 @@ export async function deletePhoto(id: string): Promise<boolean> {
 
 // Get photo count
 export async function getPhotoCount(): Promise<number> {
-  if (isKvConfigured) {
+  if (isBlobConfigured && isKvConfigured) {
     const { kv } = await import("@vercel/kv");
     return await kv.llen("photo-ids");
   } else {
