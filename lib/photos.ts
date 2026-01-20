@@ -120,21 +120,18 @@ export async function getAllPhotos(): Promise<PhotoMetadata[]> {
   if (isBlobConfigured && isKvConfigured) {
     const { kv } = await import("@vercel/kv");
     const ids = await kv.lrange<string>("photo-ids", 0, -1);
-    console.log("Photo IDs from KV:", ids);
     const photos: PhotoMetadata[] = [];
 
     for (const id of ids) {
       const photo = await kv.get<PhotoMetadata>(`photo:${id}`);
-      console.log(`Photo ${id}:`, photo);
-      if (photo) {
+      // Only include photos with valid Blob URLs (skip old local /uploads/ URLs)
+      if (photo && photo.blobUrl.startsWith("http")) {
         photos.push(photo);
       }
     }
 
-    console.log("Total photos found:", photos.length);
     return photos;
   } else {
-    console.log("Using local photos, isBlobConfigured:", isBlobConfigured, "isKvConfigured:", isKvConfigured);
     return getLocalPhotos();
   }
 }

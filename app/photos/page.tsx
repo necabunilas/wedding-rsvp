@@ -3,6 +3,7 @@ import { getAllPhotos } from "@/lib/photos";
 import PhotoGallery from "@/components/PhotoGallery";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default async function PhotosPage() {
   const photos = await getAllPhotos();
