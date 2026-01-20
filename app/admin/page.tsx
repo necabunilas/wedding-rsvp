@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { isAuthenticated } from "@/lib/auth";
 import { getGuestsWithRsvp, getGuests } from "@/lib/guests";
+import { getPhotoCount } from "@/lib/photos";
 import AdminDashboard from "@/components/AdminDashboard";
 import ClearRsvpsButton from "@/components/ClearRsvpsButton";
 
@@ -16,9 +17,11 @@ export default async function AdminPage() {
 
   let guests;
   let error = null;
+  let photoCount = 0;
 
   try {
     guests = await getGuestsWithRsvp();
+    photoCount = await getPhotoCount();
   } catch (e) {
     // Vercel KV not configured - show guests without RSVP data
     error = "Vercel KV not configured. RSVP data unavailable.";
@@ -72,6 +75,12 @@ export default async function AdminPage() {
           >
             Export to Excel
           </a>
+          <Link
+            href="/admin/photos"
+            className="px-6 py-3 bg-wedding-wine text-white rounded-xl hover:bg-wedding-gold transition-all duration-200 text-sm font-medium shadow-lg hover:shadow-xl"
+          >
+            📷 Photos ({photoCount})
+          </Link>
           <Link
             href="/"
             className="px-6 py-3 border-2 border-wedding-gold/30 rounded-xl hover:bg-wedding-gold/10 hover:border-wedding-gold/50 transition-all duration-200 text-sm font-medium text-wedding-charcoal"

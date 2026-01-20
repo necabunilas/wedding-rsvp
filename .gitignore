@@ -28,6 +28,10 @@ yarn-error.log*
 
 # local RSVP data (development only)
 /data/rsvps.json
+/data/photos.json
+
+# local photo uploads (development only)
+/public/uploads/
 
 # vercel
 .vercel

@@ -33,3 +33,13 @@ export interface GuestData {
   guests: Guest[];
   eventDetails: EventDetails;
 }
+
+export interface PhotoMetadata {
+  id: string;
+  uploaderName: string;
+  fileName: string;
+  blobUrl: string;
+  uploadedAt: string;
+  fileSize: number;
+  mimeType: string;
+}

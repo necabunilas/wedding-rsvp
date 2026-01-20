@@ -2,97 +2,97 @@
   "guests": [
     {
       "id": "guest-001",
-      "name": "Juan Dela Cruz",
+      "name": "Anthony Juarez",
       "seatsAllocated": 2
     },
     {
       "id": "guest-002",
-      "name": "Maria Santos",
+      "name": "Danna Ocaya",
       "seatsAllocated": 4
     },
     {
       "id": "guest-003",
-      "name": "Pedro Reyes",
+      "name": "Loiza Abes",
       "seatsAllocated": 1
     },
     {
       "id": "guest-004",
-      "name": "Maria Clara",
+      "name": "Jacob Taylor",
       "seatsAllocated": 2
     },
     {
       "id": "guest-005",
-      "name": "Mario Gonzales",
+      "name": "Gian Taylor",
       "seatsAllocated": 3
     },
     {
       "id": "guest-006",
-      "name": "Jose Rizal",
+      "name": "Kurt Ramos",
       "seatsAllocated": 2
     },
     {
       "id": "guest-007",
-      "name": "Josefa Garcia",
+      "name": "Andrei Sajulga",
       "seatsAllocated": 1
     },
     {
       "id": "guest-008",
-      "name": "Ana Reyes",
+      "name": "Alfred Sajulga",
       "seatsAllocated": 2
     },
     {
       "id": "guest-009",
-      "name": "Carlos Mendoza",
+      "name": "Bea Quiambao",
       "seatsAllocated": 3
     },
     {
       "id": "guest-010",
-      "name": "Carmen Lopez",
+      "name": "Bosch Lim",
       "seatsAllocated": 2
     },
     {
       "id": "guest-011",
-      "name": "Roberto Cruz",
+      "name": "Aniana Durano",
       "seatsAllocated": 4
     },
     {
       "id": "guest-012",
-      "name": "Rosa Martinez",
+      "name": "Ianna Callao",
       "seatsAllocated": 1
     },
     {
       "id": "guest-013",
-      "name": "Miguel Aquino",
+      "name": "Antoinette Tiu",
       "seatsAllocated": 2
     },
     {
       "id": "guest-014",
-      "name": "Michelle Tan",
+      "name": "Ira Kaye Bragat",
       "seatsAllocated": 3
     },
     {
       "id": "guest-015",
-      "name": "Antonio Bautista",
+      "name": "Samantha Bragat",
       "seatsAllocated": 2
     },
     {
       "id": "guest-016",
-      "name": "Angela Fernandez",
+      "name": "Sean Sanchez",
       "seatsAllocated": 2
     },
     {
       "id": "guest-017",
-      "name": "Luis Villanueva",
+      "name": "Maurice Lopez",
       "seatsAllocated": 1
     },
     {
       "id": "guest-018",
-      "name": "Lucia Ramos",
+      "name": "Lyrha Cabunilas",
       "seatsAllocated": 2
     },
     {
       "id": "guest-019",
-      "name": "Fernando Diaz",
+      "name": "Jude Nathan Rojo",
       "seatsAllocated": 4
     },
     {
