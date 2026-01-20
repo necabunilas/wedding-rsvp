@@ -102,8 +102,10 @@ export async function savePhoto(
   // Save metadata (use same storage as files - if local files, use local JSON)
   if (isBlobConfigured && isKvConfigured) {
     const { kv } = await import("@vercel/kv");
+    console.log("Saving photo metadata to KV:", id, metadata);
     await kv.set(`photo:${id}`, metadata);
     await kv.lpush("photo-ids", id);
+    console.log("Photo saved to KV successfully");
   } else {
     const photos = getLocalPhotos();
     photos.unshift(metadata); // Add to beginning (newest first)
@@ -118,17 +120,21 @@ export async function getAllPhotos(): Promise<PhotoMetadata[]> {
   if (isBlobConfigured && isKvConfigured) {
     const { kv } = await import("@vercel/kv");
     const ids = await kv.lrange<string>("photo-ids", 0, -1);
+    console.log("Photo IDs from KV:", ids);
     const photos: PhotoMetadata[] = [];
 
     for (const id of ids) {
       const photo = await kv.get<PhotoMetadata>(`photo:${id}`);
+      console.log(`Photo ${id}:`, photo);
       if (photo) {
         photos.push(photo);
       }
     }
 
+    console.log("Total photos found:", photos.length);
     return photos;
   } else {
+    console.log("Using local photos, isBlobConfigured:", isBlobConfigured, "isKvConfigured:", isKvConfigured);
     return getLocalPhotos();
   }
 }
