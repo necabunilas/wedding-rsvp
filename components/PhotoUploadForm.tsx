@@ -227,7 +227,6 @@ export default function PhotoUploadForm({ onSuccess }: PhotoUploadFormProps) {
           type="file"
           accept="image/*"
           multiple
-          capture="environment"
           onChange={handleFileSelect}
           className="hidden"
         />

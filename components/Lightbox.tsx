@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useRef, useState } from "react";
 import type { PhotoMetadata } from "@/types";
 
 interface LightboxProps {
@@ -19,6 +19,9 @@ export default function Lightbox({
   onNext,
 }: LightboxProps) {
   const currentPhoto = photos[currentIndex];
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
+  const [swipeOffset, setSwipeOffset] = useState(0);
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
@@ -28,6 +31,34 @@ export default function Lightbox({
     },
     [onClose, onPrevious, onNext]
   );
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  }, []);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const currentX = e.touches[0].clientX;
+    const diff = currentX - touchStartX.current;
+    setSwipeOffset(diff);
+  }, []);
+
+  const handleTouchEnd = useCallback(() => {
+    if (touchStartX.current === null) return;
+
+    const threshold = 50; // minimum swipe distance
+
+    if (swipeOffset > threshold && currentIndex > 0) {
+      onPrevious();
+    } else if (swipeOffset < -threshold && currentIndex < photos.length - 1) {
+      onNext();
+    }
+
+    touchStartX.current = null;
+    touchStartY.current = null;
+    setSwipeOffset(0);
+  }, [swipeOffset, currentIndex, photos.length, onPrevious, onNext]);
 
   useEffect(() => {
     document.addEventListener("keydown", handleKeyDown);
@@ -42,7 +73,12 @@ export default function Lightbox({
   if (!currentPhoto) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center">
+    <div
+      className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
       {/* Close button */}
       <button
         onClick={onClose}
@@ -80,11 +116,15 @@ export default function Lightbox({
       )}
 
       {/* Main image */}
-      <div className="max-w-[90vw] max-h-[85vh] flex flex-col items-center">
+      <div
+        className="max-w-[90vw] max-h-[85vh] flex flex-col items-center transition-transform duration-100"
+        style={{ transform: `translateX(${swipeOffset * 0.5}px)` }}
+      >
         <img
           src={currentPhoto.blobUrl}
           alt={`Photo by ${currentPhoto.uploaderName}`}
-          className="max-w-full max-h-[75vh] object-contain rounded-lg"
+          className="max-w-full max-h-[75vh] object-contain rounded-lg select-none pointer-events-none"
+          draggable={false}
         />
         <div className="mt-4 text-center">
           <p className="text-white font-medium">{currentPhoto.uploaderName}</p>
