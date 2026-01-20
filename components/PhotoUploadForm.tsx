@@ -6,14 +6,26 @@ interface PhotoUploadFormProps {
   onSuccess?: () => void;
 }
 
+interface CloudinaryResponse {
+  secure_url: string;
+  public_id: string;
+  bytes: number;
+  format: string;
+}
+
 export default function PhotoUploadForm({ onSuccess }: PhotoUploadFormProps) {
   const [uploaderName, setUploaderName] = useState("");
   const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
   const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Hardcoded for now - env vars not being bundled properly
+  const cloudName = "dahumsxt9";
+  const uploadPreset = "nic-ban-wedding";
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = Array.from(e.target.files || []);
@@ -37,6 +49,27 @@ export default function PhotoUploadForm({ onSuccess }: PhotoUploadFormProps) {
     setPreviews(previews.filter((_, i) => i !== index));
   };
 
+  const uploadToCloudinary = async (file: File): Promise<CloudinaryResponse> => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", uploadPreset || "nic-ban-wedding");
+
+    const res = await fetch(
+      `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.error?.message || "Cloudinary upload failed");
+    }
+
+    return res.json();
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -51,24 +84,72 @@ export default function PhotoUploadForm({ onSuccess }: PhotoUploadFormProps) {
       return;
     }
 
+    if (!cloudName) {
+      // Fall back to local upload if Cloudinary not configured
+      setUploading(true);
+      try {
+        const formData = new FormData();
+        formData.append("uploaderName", uploaderName.trim());
+        files.forEach((file) => formData.append("files", file));
+
+        const res = await fetch("/api/photos", {
+          method: "POST",
+          body: formData,
+        });
+
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.error || "Failed to upload photos");
+        }
+
+        setSuccess(true);
+        setFiles([]);
+        setPreviews([]);
+        onSuccess?.();
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to upload photos");
+      } finally {
+        setUploading(false);
+      }
+      return;
+    }
+
+    // Cloudinary upload
     setUploading(true);
+    setUploadProgress(0);
 
     try {
-      const formData = new FormData();
-      formData.append("uploaderName", uploaderName.trim());
-      files.forEach((file) => formData.append("files", file));
+      const uploadedPhotos = [];
 
-      const res = await fetch("/api/photos", {
-        method: "POST",
-        body: formData,
-      });
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        setUploadProgress(Math.round((i / files.length) * 100));
 
-      const data = await res.json();
+        // Upload to Cloudinary
+        const cloudinaryResult = await uploadToCloudinary(file);
 
-      if (!res.ok) {
-        throw new Error(data.error || "Failed to upload photos");
+        // Save metadata to our backend
+        const metadataRes = await fetch("/api/photos", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            cloudinaryUrl: cloudinaryResult.secure_url,
+            uploaderName: uploaderName.trim(),
+            fileName: file.name,
+            fileSize: cloudinaryResult.bytes,
+            mimeType: `image/${cloudinaryResult.format}`,
+          }),
+        });
+
+        if (!metadataRes.ok) {
+          const errorData = await metadataRes.json();
+          throw new Error(errorData.error || "Failed to save photo metadata");
+        }
+
+        uploadedPhotos.push(await metadataRes.json());
       }
 
+      setUploadProgress(100);
       setSuccess(true);
       setFiles([]);
       setPreviews([]);
@@ -77,6 +158,7 @@ export default function PhotoUploadForm({ onSuccess }: PhotoUploadFormProps) {
       setError(err instanceof Error ? err.message : "Failed to upload photos");
     } finally {
       setUploading(false);
+      setUploadProgress(0);
     }
   };
 
@@ -194,7 +276,7 @@ export default function PhotoUploadForm({ onSuccess }: PhotoUploadFormProps) {
         {uploading ? (
           <span className="flex items-center justify-center gap-2">
             <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-            Uploading...
+            Uploading{uploadProgress > 0 ? ` ${uploadProgress}%` : "..."}
           </span>
         ) : (
           `Upload ${files.length > 0 ? files.length : ""} Photo${files.length !== 1 ? "s" : ""}`

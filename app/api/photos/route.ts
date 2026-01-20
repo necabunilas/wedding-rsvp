@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
   savePhoto,
+  savePhotoMetadata,
   getAllPhotos,
   validateFile,
   MAX_FILES_PER_UPLOAD,
@@ -20,9 +21,46 @@ export async function GET() {
   }
 }
 
-// POST - Upload photos
+// POST - Upload photos or save Cloudinary metadata
 export async function POST(request: NextRequest) {
   try {
+    const contentType = request.headers.get("content-type") || "";
+
+    // Handle JSON request (Cloudinary metadata)
+    if (contentType.includes("application/json")) {
+      const body = await request.json();
+      const { cloudinaryUrl, uploaderName, fileName, fileSize, mimeType } = body;
+
+      if (!cloudinaryUrl || !uploaderName) {
+        return NextResponse.json(
+          { error: "Missing required fields" },
+          { status: 400 }
+        );
+      }
+
+      if (uploaderName.length > 100) {
+        return NextResponse.json(
+          { error: "Name is too long (max 100 characters)" },
+          { status: 400 }
+        );
+      }
+
+      const photo = await savePhotoMetadata(
+        cloudinaryUrl,
+        uploaderName,
+        fileName || "photo.jpg",
+        fileSize || 0,
+        mimeType || "image/jpeg"
+      );
+
+      return NextResponse.json({
+        success: true,
+        photo,
+        message: "Photo saved successfully",
+      });
+    }
+
+    // Handle FormData request (local file upload fallback)
     const formData = await request.formData();
     const uploaderName = formData.get("uploaderName") as string;
     const files = formData.getAll("files") as File[];
@@ -68,7 +106,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Save all files
+    // Save all files locally
     const savedPhotos = [];
     for (const file of files) {
       const photo = await savePhoto(file, uploaderName.trim());

@@ -2,8 +2,8 @@ import type { PhotoMetadata } from "@/types";
 import fs from "fs";
 import path from "path";
 
-// Check if Vercel Blob is configured
-const isBlobConfigured = !!process.env.BLOB_READ_WRITE_TOKEN;
+// Check if Cloudinary is configured
+const isCloudinaryConfigured = !!process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
 
 // Check if Vercel KV is configured (for metadata storage)
 const isKvConfigured = !!(process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN);
@@ -62,45 +62,28 @@ function generateId(): string {
   return `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
 }
 
-// Save a photo
-export async function savePhoto(
-  file: File,
-  uploaderName: string
+// Save photo metadata (after Cloudinary upload)
+export async function savePhotoMetadata(
+  cloudinaryUrl: string,
+  uploaderName: string,
+  fileName: string,
+  fileSize: number,
+  mimeType: string
 ): Promise<PhotoMetadata> {
   const id = generateId();
-  const safeFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, "_");
-  const storedFileName = `${id}-${safeFileName}`;
-
-  let blobUrl: string;
-
-  if (isBlobConfigured) {
-    // Production: Use Vercel Blob
-    const { put } = await import("@vercel/blob");
-    const blob = await put(`photos/${storedFileName}`, file, {
-      access: "public",
-    });
-    blobUrl = blob.url;
-  } else {
-    // Development: Use local filesystem
-    ensureUploadsDir();
-    const localPath = path.join(LOCAL_UPLOADS_DIR, storedFileName);
-    const buffer = Buffer.from(await file.arrayBuffer());
-    fs.writeFileSync(localPath, buffer);
-    blobUrl = `/uploads/${storedFileName}`;
-  }
 
   const metadata: PhotoMetadata = {
     id,
     uploaderName,
-    fileName: file.name,
-    blobUrl,
+    fileName,
+    blobUrl: cloudinaryUrl,
     uploadedAt: new Date().toISOString(),
-    fileSize: file.size,
-    mimeType: file.type,
+    fileSize,
+    mimeType,
   };
 
-  // Save metadata (use same storage as files - if local files, use local JSON)
-  if (isBlobConfigured && isKvConfigured) {
+  // Save metadata
+  if (isCloudinaryConfigured && isKvConfigured) {
     const { kv } = await import("@vercel/kv");
     console.log("Saving photo metadata to KV:", id, metadata);
     await kv.set(`photo:${id}`, metadata);
@@ -115,16 +98,49 @@ export async function savePhoto(
   return metadata;
 }
 
+// Legacy save function for local development
+export async function savePhoto(
+  file: File,
+  uploaderName: string
+): Promise<PhotoMetadata> {
+  const id = generateId();
+  const safeFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, "_");
+  const storedFileName = `${id}-${safeFileName}`;
+
+  // Development: Use local filesystem
+  ensureUploadsDir();
+  const localPath = path.join(LOCAL_UPLOADS_DIR, storedFileName);
+  const buffer = Buffer.from(await file.arrayBuffer());
+  fs.writeFileSync(localPath, buffer);
+  const blobUrl = `/uploads/${storedFileName}`;
+
+  const metadata: PhotoMetadata = {
+    id,
+    uploaderName,
+    fileName: file.name,
+    blobUrl,
+    uploadedAt: new Date().toISOString(),
+    fileSize: file.size,
+    mimeType: file.type,
+  };
+
+  const photos = getLocalPhotos();
+  photos.unshift(metadata);
+  saveLocalPhotos(photos);
+
+  return metadata;
+}
+
 // Get all photos
 export async function getAllPhotos(): Promise<PhotoMetadata[]> {
-  if (isBlobConfigured && isKvConfigured) {
+  if (isCloudinaryConfigured && isKvConfigured) {
     const { kv } = await import("@vercel/kv");
     const ids = await kv.lrange<string>("photo-ids", 0, -1);
     const photos: PhotoMetadata[] = [];
 
     for (const id of ids) {
       const photo = await kv.get<PhotoMetadata>(`photo:${id}`);
-      // Only include photos with valid Blob URLs (skip old local /uploads/ URLs)
+      // Only include photos with valid URLs (skip old local /uploads/ URLs)
       if (photo && photo.blobUrl.startsWith("http")) {
         photos.push(photo);
       }
@@ -138,7 +154,7 @@ export async function getAllPhotos(): Promise<PhotoMetadata[]> {
 
 // Get a single photo by ID
 export async function getPhotoById(id: string): Promise<PhotoMetadata | null> {
-  if (isBlobConfigured && isKvConfigured) {
+  if (isCloudinaryConfigured && isKvConfigured) {
     const { kv } = await import("@vercel/kv");
     return await kv.get<PhotoMetadata>(`photo:${id}`);
   } else {
@@ -152,16 +168,9 @@ export async function deletePhoto(id: string): Promise<boolean> {
   const photo = await getPhotoById(id);
   if (!photo) return false;
 
-  // Delete the actual file
-  if (isBlobConfigured) {
-    const { del } = await import("@vercel/blob");
-    try {
-      await del(photo.blobUrl);
-    } catch (error) {
-      console.error("Error deleting blob:", error);
-    }
-  } else {
-    // Delete local file
+  // For Cloudinary, we don't delete the actual file (would need API secret)
+  // For local, delete the file
+  if (!isCloudinaryConfigured) {
     const localPath = path.join(process.cwd(), "public", photo.blobUrl);
     try {
       if (fs.existsSync(localPath)) {
@@ -173,7 +182,7 @@ export async function deletePhoto(id: string): Promise<boolean> {
   }
 
   // Delete metadata
-  if (isBlobConfigured && isKvConfigured) {
+  if (isCloudinaryConfigured && isKvConfigured) {
     const { kv } = await import("@vercel/kv");
     await kv.del(`photo:${id}`);
     await kv.lrem("photo-ids", 1, id);
@@ -188,7 +197,7 @@ export async function deletePhoto(id: string): Promise<boolean> {
 
 // Get photo count
 export async function getPhotoCount(): Promise<number> {
-  if (isBlobConfigured && isKvConfigured) {
+  if (isCloudinaryConfigured && isKvConfigured) {
     const { kv } = await import("@vercel/kv");
     return await kv.llen("photo-ids");
   } else {
