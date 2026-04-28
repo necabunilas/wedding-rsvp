@@ -109,6 +109,38 @@ export default function DetailsPage() {
 
             <div className="h-px bg-wedding-gold/20 mx-8"></div>
 
+            {/* Dress Code */}
+            <section className="text-center">
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-wedding-gold-light mb-5">
+                <span className="text-2xl">👗</span>
+              </div>
+              <h2 className="text-xs font-medium text-wedding-gold uppercase tracking-[0.25em] mb-3">
+                Dress Code
+              </h2>
+              <p className="text-2xl font-serif text-wedding-wine">Formal Attire</p>
+              <p className="text-wedding-gray text-sm mt-2">
+                We kindly invite you to wear our wedding palette
+              </p>
+
+              <div className="mt-6 rounded-xl overflow-hidden bg-white border border-wedding-gold/10">
+                <img
+                  src="/IMG_5718.jpeg"
+                  alt="Wedding color palette: Crimson Bloom, Soft Lilac, Antique Petal, Butter, Citron"
+                  className="w-full h-auto"
+                />
+              </div>
+
+              <div className="mt-4">
+                <img
+                  src="/IMG_5715.png"
+                  alt="Dress code attire inspiration"
+                  className="w-full h-auto"
+                />
+              </div>
+            </section>
+
+            <div className="h-px bg-wedding-gold/20 mx-8"></div>
+
             {/* RSVP Deadline */}
             <section className="text-center">
               <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-wedding-gold-light mb-5">
