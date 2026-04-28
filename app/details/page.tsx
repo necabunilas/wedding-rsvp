@@ -149,6 +149,52 @@ export default function DetailsPage() {
 
             <div className="h-px bg-wedding-gold/20 mx-8"></div>
 
+            {/* Church Guidelines */}
+            <section className="text-center">
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-wedding-gold-light mb-5">
+                <span className="text-2xl">🕊️</span>
+              </div>
+              <h2 className="text-xs font-medium text-wedding-gold uppercase tracking-[0.25em] mb-3">
+                Church Guidelines
+              </h2>
+              <p className="text-wedding-gray text-sm mt-2 mb-6">
+                A few kind reminders for the ceremony
+              </p>
+
+              <ul className="text-left text-wedding-charcoal text-sm space-y-3 max-w-md mx-auto">
+                <li className="flex gap-3">
+                  <span className="text-wedding-gold mt-0.5">•</span>
+                  <span>Please arrive 15–30 minutes before the ceremony to settle in.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-wedding-gold mt-0.5">•</span>
+                  <span>Kindly silence your phones and devices before entering the church.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-wedding-gold mt-0.5">•</span>
+                  <span>No flash photography or recording during the ceremony — please let our official photographer capture the moment.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-wedding-gold mt-0.5">•</span>
+                  <span>Please remain seated and respectfully quiet during the liturgy.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-wedding-gold mt-0.5">•</span>
+                  <span>No rice, confetti, flower petals, or bubbles inside the church or on church grounds.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-wedding-gold mt-0.5">•</span>
+                  <span>Releasing of doves, balloons, or butterflies is not permitted.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-wedding-gold mt-0.5">•</span>
+                  <span>Please bring a cover-up if your attire is sleeveless or too revealing.</span>
+                </li>
+              </ul>
+            </section>
+
+            <div className="h-px bg-wedding-gold/20 mx-8"></div>
+
             {/* RSVP Deadline */}
             <section className="text-center">
               <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-wedding-gold-light mb-5">
