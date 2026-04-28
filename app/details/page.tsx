@@ -117,18 +117,22 @@ export default function DetailsPage() {
               <h2 className="text-xs font-medium text-wedding-gold uppercase tracking-[0.25em] mb-3">
                 Dress Code
               </h2>
-              <p className="text-2xl font-serif text-wedding-wine">Formal Attire</p>
-              <p className="text-wedding-gray text-sm mt-2">
-                We kindly invite you to wear our wedding palette
+
+              <p className="text-wedding-charcoal text-base mt-2">
+                Feel free to wear anything you&rsquo;re comfortable in that&rsquo;s within the color palette below:
               </p>
 
-              <div className="mt-6 rounded-xl overflow-hidden bg-white border border-wedding-gold/10">
+              <div className="mt-4 rounded-xl overflow-hidden bg-white border border-wedding-gold/10">
                 <img
                   src="/IMG_5718.jpeg"
                   alt="Wedding color palette: Crimson Bloom, Soft Lilac, Antique Petal, Butter, Citron"
                   className="w-full h-auto"
                 />
               </div>
+
+              <p className="text-wedding-charcoal text-base mt-6">
+                Here are sample attires if you need ideas:
+              </p>
 
               <div className="mt-4">
                 <img
@@ -137,6 +141,10 @@ export default function DetailsPage() {
                   className="w-full h-auto"
                 />
               </div>
+
+              <p className="italic font-bold text-wedding-wine text-sm mt-6">
+                For the ceremony, we kindly request you bring a cover-up if your dress is too revealing (as per the church&rsquo;s guidelines).
+              </p>
             </section>
 
             <div className="h-px bg-wedding-gold/20 mx-8"></div>
