@@ -130,7 +130,7 @@ export default function DetailsPage() {
                 />
               </div>
 
-              <p className="text-wedding-charcoal text-base mt-6">
+              <p className="text-wedding-charcoal text-base mt-10">
                 Here are sample attires if you need ideas:
               </p>
 
