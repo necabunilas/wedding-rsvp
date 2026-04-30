@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import { compressImage } from "@/lib/imageCompress";
 
 interface PhotoUploadFormProps {
   onSuccess?: () => void;
@@ -19,6 +20,7 @@ export default function PhotoUploadForm({ onSuccess }: PhotoUploadFormProps) {
   const [previews, setPreviews] = useState<string[]>([]);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [statusLabel, setStatusLabel] = useState<"optimizing" | "uploading" | null>(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -125,8 +127,11 @@ export default function PhotoUploadForm({ onSuccess }: PhotoUploadFormProps) {
         const file = files[i];
         setUploadProgress(Math.round((i / files.length) * 100));
 
-        // Upload to Cloudinary
-        const cloudinaryResult = await uploadToCloudinary(file);
+        setStatusLabel("optimizing");
+        const optimized = await compressImage(file);
+
+        setStatusLabel("uploading");
+        const cloudinaryResult = await uploadToCloudinary(optimized);
 
         // Save metadata to our backend
         const metadataRes = await fetch("/api/photos", {
@@ -159,6 +164,7 @@ export default function PhotoUploadForm({ onSuccess }: PhotoUploadFormProps) {
     } finally {
       setUploading(false);
       setUploadProgress(0);
+      setStatusLabel(null);
     }
   };
 
@@ -275,7 +281,9 @@ export default function PhotoUploadForm({ onSuccess }: PhotoUploadFormProps) {
         {uploading ? (
           <span className="flex items-center justify-center gap-2">
             <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-            Uploading{uploadProgress > 0 ? ` ${uploadProgress}%` : "..."}
+            {statusLabel === "optimizing"
+              ? `Optimizing${uploadProgress > 0 ? ` ${uploadProgress}%` : "..."}`
+              : `Uploading${uploadProgress > 0 ? ` ${uploadProgress}%` : "..."}`}
           </span>
         ) : (
           `Upload ${files.length > 0 ? files.length : ""} Photo${files.length !== 1 ? "s" : ""}`
