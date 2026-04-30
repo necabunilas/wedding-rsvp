@@ -127,7 +127,7 @@ export default function Home() {
           href="/details"
           className="inline-flex items-center gap-2 text-wedding-wine hover:text-wedding-gold text-sm transition-colors group"
         >
-          <span>View Event Details</span>
+          <span>View Wedding Details</span>
           <span className="group-hover:translate-x-1 transition-transform">→</span>
         </Link>
       </div>

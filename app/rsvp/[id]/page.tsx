@@ -141,7 +141,7 @@ export default function RsvpPage() {
               href="/details"
               className="block w-full py-3 px-4 bg-wedding-wine text-white rounded-xl hover:bg-wedding-gold transition-colors font-medium"
             >
-              View Event Details
+              View Wedding Details
             </Link>
             <Link
               href="/"
