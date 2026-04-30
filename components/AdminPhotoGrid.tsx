@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { PhotoMetadata } from "@/types";
+import { withTransform, GRID_THUMBNAIL } from "@/lib/cloudinary";
 
 interface AdminPhotoGridProps {
   initialPhotos: PhotoMetadata[];
@@ -51,9 +52,10 @@ export default function AdminPhotoGrid({ initialPhotos }: AdminPhotoGridProps) {
         >
           <div className="aspect-square">
             <img
-              src={photo.blobUrl}
+              src={withTransform(photo.blobUrl, GRID_THUMBNAIL)}
               alt={`Photo by ${photo.uploaderName}`}
               className="w-full h-full object-cover"
+              loading="lazy"
             />
           </div>
           <div className="p-3">

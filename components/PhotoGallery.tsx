@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { PhotoMetadata } from "@/types";
 import Lightbox from "./Lightbox";
+import { withTransform, GRID_THUMBNAIL } from "@/lib/cloudinary";
 
 interface PhotoGalleryProps {
   photos: PhotoMetadata[];
@@ -37,7 +38,7 @@ export default function PhotoGallery({
             onClick={() => setLightboxIndex(index)}
           >
             <img
-              src={photo.blobUrl}
+              src={withTransform(photo.blobUrl, GRID_THUMBNAIL)}
               alt={`Photo by ${photo.uploaderName}`}
               className="w-full h-full object-cover rounded-xl transition-transform group-hover:scale-[1.02]"
               loading="lazy"

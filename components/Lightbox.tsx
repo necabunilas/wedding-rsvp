@@ -2,6 +2,7 @@
 
 import { useEffect, useCallback, useRef, useState } from "react";
 import type { PhotoMetadata } from "@/types";
+import { withTransform, LIGHTBOX_FULL } from "@/lib/cloudinary";
 
 interface LightboxProps {
   photos: PhotoMetadata[];
@@ -121,7 +122,7 @@ export default function Lightbox({
         style={{ transform: `translateX(${swipeOffset * 0.5}px)` }}
       >
         <img
-          src={currentPhoto.blobUrl}
+          src={withTransform(currentPhoto.blobUrl, LIGHTBOX_FULL)}
           alt={`Photo by ${currentPhoto.uploaderName}`}
           className="max-w-full max-h-[75vh] object-contain rounded-lg select-none pointer-events-none"
           draggable={false}
