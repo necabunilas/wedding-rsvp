@@ -77,6 +77,9 @@ export default function AdminDashboard({ guests }: AdminDashboardProps) {
               <th className="px-6 py-4 text-center text-xs font-medium text-wedding-gray uppercase tracking-wider">
                 Confirmed
               </th>
+              <th className="px-6 py-4 text-center text-xs font-medium text-wedding-gray uppercase tracking-wider">
+                Kids
+              </th>
               <th className="px-6 py-4 text-left text-xs font-medium text-wedding-gray uppercase tracking-wider">
                 Dietary
               </th>
@@ -97,6 +100,13 @@ export default function AdminDashboard({ guests }: AdminDashboardProps) {
                 </td>
                 <td className="px-6 py-4 text-sm text-wedding-charcoal text-center font-medium">
                   {guest.seatsConfirmed ?? "-"}
+                </td>
+                <td className="px-6 py-4 text-center text-sm font-medium text-wedding-charcoal">
+                  {guest.respondedAt && (guest.seatsConfirmed ?? 0) > 0
+                    ? guest.childrenCount > 0
+                      ? guest.childrenCount
+                      : <span className="text-wedding-gray">—</span>
+                    : <span className="text-wedding-gray">—</span>}
                 </td>
                 <td className="px-6 py-4 text-sm text-wedding-gray max-w-xs truncate">
                   {guest.dietaryRestrictions || "-"}

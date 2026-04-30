@@ -29,6 +29,7 @@ export default async function AdminPage() {
       ...g,
       seatsConfirmed: null,
       dietaryRestrictions: "",
+      childrenCount: 0,
       respondedAt: null,
     }));
   }

@@ -13,6 +13,7 @@ export default function RsvpPage() {
   const [existingRsvp, setExistingRsvp] = useState<RsvpResponse | null>(null);
   const [seatsConfirmed, setSeatsConfirmed] = useState<number>(0);
   const [dietaryRestrictions, setDietaryRestrictions] = useState("");
+  const [childrenCount, setChildrenCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -40,6 +41,7 @@ export default function RsvpPage() {
             setExistingRsvp(rsvpData.rsvp);
             setSeatsConfirmed(rsvpData.rsvp.seatsConfirmed);
             setDietaryRestrictions(rsvpData.rsvp.dietaryRestrictions || "");
+            setChildrenCount(Number(rsvpData.rsvp.childrenCount) || 0);
           }
         }
       } catch (err) {
@@ -51,6 +53,11 @@ export default function RsvpPage() {
 
     fetchData();
   }, [guestId]);
+
+  // Keep children count within the current seat count.
+  useEffect(() => {
+    setChildrenCount((c) => (c > seatsConfirmed ? seatsConfirmed : c));
+  }, [seatsConfirmed]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -65,6 +72,7 @@ export default function RsvpPage() {
           guestId,
           seatsConfirmed,
           dietaryRestrictions,
+          childrenCount,
         }),
       });
 
@@ -246,19 +254,45 @@ export default function RsvpPage() {
             </div>
 
             {seatsConfirmed > 0 && (
-              <div>
-                <label className="block text-xs font-medium text-wedding-gray uppercase tracking-wider mb-3">
-                  Dietary Restrictions
-                  <span className="normal-case tracking-normal font-normal ml-1">(optional)</span>
-                </label>
-                <textarea
-                  value={dietaryRestrictions}
-                  onChange={(e) => setDietaryRestrictions(e.target.value)}
-                  placeholder="e.g., vegetarian, allergies, etc."
-                  rows={2}
-                  className="w-full px-4 py-3 bg-wedding-cream border border-wedding-gold/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-wedding-gold/50 focus:border-wedding-gold resize-none text-wedding-charcoal placeholder:text-wedding-gray/60"
-                />
-              </div>
+              <>
+                <div className="p-4 bg-wedding-cream rounded-xl border border-wedding-gold/30">
+                  <label className="block text-sm font-medium text-wedding-charcoal mb-1">
+                    How many children are coming?
+                  </label>
+                  <p className="text-xs text-wedding-gray mb-3">
+                    Children are welcome — they can play outside the church during the ceremony.
+                  </p>
+                  <input
+                    type="number"
+                    inputMode="numeric"
+                    min={0}
+                    max={seatsConfirmed}
+                    value={childrenCount}
+                    onChange={(e) => {
+                      const n = Math.max(
+                        0,
+                        Math.min(seatsConfirmed, Math.floor(Number(e.target.value) || 0))
+                      );
+                      setChildrenCount(n);
+                    }}
+                    className="w-24 px-4 py-2.5 bg-white border border-wedding-gold/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-wedding-gold/50 focus:border-wedding-gold text-wedding-charcoal text-center text-lg font-medium"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-wedding-gray uppercase tracking-wider mb-3">
+                    Dietary Restrictions
+                    <span className="normal-case tracking-normal font-normal ml-1">(optional)</span>
+                  </label>
+                  <textarea
+                    value={dietaryRestrictions}
+                    onChange={(e) => setDietaryRestrictions(e.target.value)}
+                    placeholder="e.g., vegetarian, allergies, etc."
+                    rows={2}
+                    className="w-full px-4 py-3 bg-wedding-cream border border-wedding-gold/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-wedding-gold/50 focus:border-wedding-gold resize-none text-wedding-charcoal placeholder:text-wedding-gray/60"
+                  />
+                </div>
+              </>
             )}
 
             {error && (

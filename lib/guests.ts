@@ -58,7 +58,8 @@ export function getGuestById(id: string): Guest | undefined {
 export async function saveRsvp(
   guestId: string,
   seatsConfirmed: number,
-  dietaryRestrictions: string
+  dietaryRestrictions: string,
+  childrenCount: number = 0
 ): Promise<RsvpResponse> {
   const guest = getGuestById(guestId);
   const response: RsvpResponse = {
@@ -66,6 +67,7 @@ export async function saveRsvp(
     guestName: guest?.name || "Unknown",
     seatsConfirmed,
     dietaryRestrictions,
+    childrenCount,
     respondedAt: new Date().toISOString(),
   };
 
@@ -121,6 +123,7 @@ export async function getGuestsWithRsvp(): Promise<GuestWithRsvp[]> {
       ...guest,
       seatsConfirmed: rsvp?.seatsConfirmed ?? null,
       dietaryRestrictions: rsvp?.dietaryRestrictions ?? "",
+      childrenCount: rsvp?.childrenCount ?? 0,
       respondedAt: rsvp?.respondedAt ?? null,
     };
   });

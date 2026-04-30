@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { guestId, seatsConfirmed, dietaryRestrictions } = body;
+    const { guestId, seatsConfirmed, dietaryRestrictions, childrenCount } = body;
 
     if (!guestId) {
       return NextResponse.json({ error: "Guest ID required" }, { status: 400 });
@@ -41,7 +41,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const rsvp = await saveRsvp(guestId, seats, dietaryRestrictions || "");
+    const kids = Math.max(0, Math.min(seats, Math.floor(Number(childrenCount) || 0)));
+
+    const rsvp = await saveRsvp(
+      guestId,
+      seats,
+      dietaryRestrictions || "",
+      kids
+    );
 
     return NextResponse.json({ success: true, rsvp });
   } catch (error) {

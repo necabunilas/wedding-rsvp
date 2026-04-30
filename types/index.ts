@@ -9,12 +9,14 @@ export interface RsvpResponse {
   guestName: string;
   seatsConfirmed: number;
   dietaryRestrictions: string;
+  childrenCount?: number;
   respondedAt: string;
 }
 
 export interface GuestWithRsvp extends Guest {
   seatsConfirmed: number | null;
   dietaryRestrictions: string;
+  childrenCount: number;
   respondedAt: string | null;
 }
 

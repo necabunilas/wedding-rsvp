@@ -22,6 +22,7 @@ export async function GET() {
       ...g,
       seatsConfirmed: null,
       dietaryRestrictions: "",
+      childrenCount: 0,
       respondedAt: null,
     }));
   }
@@ -37,6 +38,10 @@ export async function GET() {
         : guest.seatsConfirmed === 0
           ? "Declined"
           : "Attending",
+    "Children":
+      guest.respondedAt && (guest.seatsConfirmed ?? 0) > 0
+        ? guest.childrenCount
+        : "",
     "Dietary Restrictions": guest.dietaryRestrictions || "",
     "Response Date": guest.respondedAt
       ? new Date(guest.respondedAt).toLocaleDateString()
@@ -53,6 +58,7 @@ export async function GET() {
     { wch: 15 }, // Seats Allocated
     { wch: 15 }, // Seats Confirmed
     { wch: 12 }, // Status
+    { wch: 10 }, // Children
     { wch: 25 }, // Dietary
     { wch: 15 }, // Response Date
   ];
