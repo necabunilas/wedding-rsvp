@@ -23,16 +23,14 @@ export default function AdminLoginPage() {
       });
 
       if (res.ok) {
-        router.push("/admin");
-        router.refresh();
-      } else {
-        setError("Invalid password");
+        router.replace("/admin");
+        return; // keep loading state until navigation completes
       }
+      setError("Invalid password");
     } catch (err) {
       setError("Login failed. Please try again.");
-    } finally {
-      setLoading(false);
     }
+    setLoading(false);
   };
 
   return (

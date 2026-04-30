@@ -92,35 +92,36 @@ export async function getRsvp(guestId: string): Promise<RsvpResponse | null> {
   }
 }
 
+// Batch-fetch all RSVPs in a single round-trip when KV is configured.
+async function getRsvpsForGuests(guests: Guest[]): Promise<(RsvpResponse | null)[]> {
+  if (guests.length === 0) return [];
+  if (isKvConfigured) {
+    const keys = guests.map((g) => `rsvp:${g.id}`);
+    return await kv.mget<RsvpResponse[]>(...keys);
+  }
+  const local = getLocalRsvps();
+  return guests.map((g) => local[g.id] || null);
+}
+
 // Get all RSVP responses
 export async function getAllRsvps(): Promise<RsvpResponse[]> {
   const guests = getGuests();
-  const responses: RsvpResponse[] = [];
-
-  for (const guest of guests) {
-    const rsvp = await getRsvp(guest.id);
-    if (rsvp) {
-      responses.push(rsvp);
-    }
-  }
-
-  return responses;
+  const rsvps = await getRsvpsForGuests(guests);
+  return rsvps.filter((r): r is RsvpResponse => r !== null);
 }
 
 // Get all guests with their RSVP status merged
 export async function getGuestsWithRsvp(): Promise<GuestWithRsvp[]> {
   const guests = getGuests();
-  const guestsWithRsvp: GuestWithRsvp[] = [];
+  const rsvps = await getRsvpsForGuests(guests);
 
-  for (const guest of guests) {
-    const rsvp = await getRsvp(guest.id);
-    guestsWithRsvp.push({
+  return guests.map((guest, i) => {
+    const rsvp = rsvps[i];
+    return {
       ...guest,
       seatsConfirmed: rsvp?.seatsConfirmed ?? null,
       dietaryRestrictions: rsvp?.dietaryRestrictions ?? "",
       respondedAt: rsvp?.respondedAt ?? null,
-    });
-  }
-
-  return guestsWithRsvp;
+    };
+  });
 }
