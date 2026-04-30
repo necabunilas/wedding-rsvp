@@ -178,18 +178,6 @@ export default function DetailsPage() {
                   <span className="text-wedding-gold mt-0.5">•</span>
                   <span>To keep the ceremony intimate, children can go outside the church to run around and be children…with parental guidance, of course.</span>
                 </li>
-                <li className="flex gap-3">
-                  <span className="text-wedding-gold mt-0.5">•</span>
-                  <span>No rice, confetti, flower petals, or bubbles inside the church or on church grounds.</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-wedding-gold mt-0.5">•</span>
-                  <span>Releasing of doves, balloons, or butterflies is not permitted.</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-wedding-gold mt-0.5">•</span>
-                  <span>Please bring a cover-up if your attire is sleeveless or too revealing.</span>
-                </li>
               </ul>
             </section>
 
