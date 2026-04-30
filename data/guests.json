@@ -1,105 +1,63 @@
 {
   "guests": [
-    {
-      "id": "guest-001",
-      "name": "Anthony Juarez",
-      "seatsAllocated": 2
-    },
-    {
-      "id": "guest-002",
-      "name": "Danna Ocaya",
-      "seatsAllocated": 4
-    },
-    {
-      "id": "guest-003",
-      "name": "Loiza Abes",
-      "seatsAllocated": 1
-    },
-    {
-      "id": "guest-004",
-      "name": "Jacob Taylor",
-      "seatsAllocated": 2
-    },
-    {
-      "id": "guest-005",
-      "name": "Gian Taylor",
-      "seatsAllocated": 3
-    },
-    {
-      "id": "guest-006",
-      "name": "Kurt Ramos",
-      "seatsAllocated": 2
-    },
-    {
-      "id": "guest-007",
-      "name": "Andrei Sajulga",
-      "seatsAllocated": 1
-    },
-    {
-      "id": "guest-008",
-      "name": "Alfred Sajulga",
-      "seatsAllocated": 2
-    },
-    {
-      "id": "guest-009",
-      "name": "Bea Quiambao",
-      "seatsAllocated": 3
-    },
-    {
-      "id": "guest-010",
-      "name": "Bosch Lim",
-      "seatsAllocated": 2
-    },
-    {
-      "id": "guest-011",
-      "name": "Aniana Durano",
-      "seatsAllocated": 4
-    },
-    {
-      "id": "guest-012",
-      "name": "Ianna Callao",
-      "seatsAllocated": 1
-    },
-    {
-      "id": "guest-013",
-      "name": "Antoinette Tiu",
-      "seatsAllocated": 2
-    },
-    {
-      "id": "guest-014",
-      "name": "Ira Kaye Bragat",
-      "seatsAllocated": 3
-    },
-    {
-      "id": "guest-015",
-      "name": "Samantha Bragat",
-      "seatsAllocated": 2
-    },
-    {
-      "id": "guest-016",
-      "name": "Sean Sanchez",
-      "seatsAllocated": 2
-    },
-    {
-      "id": "guest-017",
-      "name": "Maurice Lopez",
-      "seatsAllocated": 1
-    },
-    {
-      "id": "guest-018",
-      "name": "Lyrha Cabunilas",
-      "seatsAllocated": 2
-    },
-    {
-      "id": "guest-019",
-      "name": "Jude Nathan Rojo",
-      "seatsAllocated": 4
-    },
-    {
-      "id": "guest-020",
-      "name": "Fe Santos",
-      "seatsAllocated": 1
-    }
+    { "id": "guest-001", "name": "Theogenes Gayon", "seatsAllocated": 5 },
+    { "id": "guest-002", "name": "Lalene Fernandez", "seatsAllocated": 4 },
+    { "id": "guest-003", "name": "Felix Gayon Sr.", "seatsAllocated": 5 },
+    { "id": "guest-004", "name": "Mark Rowell Gayon", "seatsAllocated": 2 },
+    { "id": "guest-005", "name": "Brenda Flor Eltanal", "seatsAllocated": 4 },
+    { "id": "guest-006", "name": "Brigette Rubio", "seatsAllocated": 7 },
+    { "id": "guest-007", "name": "Rey Gayon", "seatsAllocated": 4 },
+    { "id": "guest-008", "name": "Dave Gayon", "seatsAllocated": 4 },
+    { "id": "guest-009", "name": "Bryan Malicse", "seatsAllocated": 5 },
+    { "id": "guest-010", "name": "Alzina May Melendez", "seatsAllocated": 2 },
+    { "id": "guest-011", "name": "Dante N. Melendez", "seatsAllocated": 3 },
+    { "id": "guest-012", "name": "Jan James Melendez", "seatsAllocated": 4 },
+    { "id": "guest-013", "name": "Nadine Love Amogod", "seatsAllocated": 6 },
+    { "id": "guest-014", "name": "Dana Lou Buna", "seatsAllocated": 4 },
+    { "id": "guest-015", "name": "Jude Alfred Sajulga", "seatsAllocated": 6 },
+    { "id": "guest-016", "name": "Golda Mae Lim", "seatsAllocated": 5 },
+    { "id": "guest-017", "name": "Loiza Allison Abes", "seatsAllocated": 5 },
+    { "id": "guest-018", "name": "Anthony Juarez", "seatsAllocated": 1 },
+    { "id": "guest-019", "name": "Honey Danna Ocaya", "seatsAllocated": 1 },
+    { "id": "guest-020", "name": "Maria Aniana Durano", "seatsAllocated": 1 },
+    { "id": "guest-021", "name": "Melu Antoinette Tiu", "seatsAllocated": 1 },
+    { "id": "guest-022", "name": "Patrick Mercado", "seatsAllocated": 1 },
+    { "id": "guest-023", "name": "Maurice Dane Lopez", "seatsAllocated": 1 },
+    { "id": "guest-024", "name": "Alexa Kate Tahanlangit", "seatsAllocated": 1 },
+    { "id": "guest-025", "name": "Shiela Gay Bragat", "seatsAllocated": 5 },
+    { "id": "guest-026", "name": "Kurt Anthony Ramos", "seatsAllocated": 1 },
+    { "id": "guest-027", "name": "Sean Theodore Sanchez", "seatsAllocated": 1 },
+    { "id": "guest-028", "name": "Godwin Jacob Taylor", "seatsAllocated": 3 },
+    { "id": "guest-029", "name": "Bea Marie Quiambao", "seatsAllocated": 1 },
+    { "id": "guest-030", "name": "Deborrah Batonghinog", "seatsAllocated": 1 },
+    { "id": "guest-031", "name": "Marianne Mae Arcaya", "seatsAllocated": 1 },
+    { "id": "guest-032", "name": "Ma. Sofia Reyes", "seatsAllocated": 2 },
+    { "id": "guest-033", "name": "Dane Dover Cortes", "seatsAllocated": 1 },
+    { "id": "guest-034", "name": "Lorylee Malinao", "seatsAllocated": 2 },
+    { "id": "guest-035", "name": "Myrjul Emeterio", "seatsAllocated": 1 },
+    { "id": "guest-036", "name": "Karlo Dela Cerna", "seatsAllocated": 1 },
+    { "id": "guest-037", "name": "Glenn Ian Padilla", "seatsAllocated": 1 },
+    { "id": "guest-038", "name": "Elbien Itaas", "seatsAllocated": 1 },
+    { "id": "guest-039", "name": "Merimae Villamayor", "seatsAllocated": 1 },
+    { "id": "guest-040", "name": "Freshelle May Tilanduca", "seatsAllocated": 2 },
+    { "id": "guest-041", "name": "Jude Nathan Rojo", "seatsAllocated": 2 },
+    { "id": "guest-042", "name": "Leoniel De Leon", "seatsAllocated": 1 },
+    { "id": "guest-043", "name": "Bertrand Gregg Ramos III", "seatsAllocated": 2 },
+    { "id": "guest-044", "name": "Mark Uy", "seatsAllocated": 2 },
+    { "id": "guest-045", "name": "Lyrha Cabunilas", "seatsAllocated": 2 },
+    { "id": "guest-046", "name": "John Lev Gayod", "seatsAllocated": 2 },
+    { "id": "guest-047", "name": "Vincent Anthony Bacalso", "seatsAllocated": 2 },
+    { "id": "guest-048", "name": "Adrian Enriquez", "seatsAllocated": 2 },
+    { "id": "guest-049", "name": "Joseph Mari Fantonial", "seatsAllocated": 2 },
+    { "id": "guest-050", "name": "Shane Kinsley Veloso", "seatsAllocated": 2 },
+    { "id": "guest-051", "name": "Irene Moleta", "seatsAllocated": 3 },
+    { "id": "guest-052", "name": "Ermie Cabunilas", "seatsAllocated": 4 },
+    { "id": "guest-053", "name": "Francis Erik Razote", "seatsAllocated": 2 },
+    { "id": "guest-054", "name": "Odessa Cubar", "seatsAllocated": 1 },
+    { "id": "guest-055", "name": "Christian Marc Demoral", "seatsAllocated": 2 },
+    { "id": "guest-056", "name": "B Carla Yap", "seatsAllocated": 1 },
+    { "id": "guest-057", "name": "Dax Christian Bagares", "seatsAllocated": 2 },
+    { "id": "guest-058", "name": "Mico Solon", "seatsAllocated": 2 }
   ],
   "eventDetails": {
     "coupleName": "Nic & Ban",
