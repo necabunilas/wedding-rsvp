@@ -2,9 +2,7 @@ import guestData from "@/data/guests.json";
 import type { Guest, GuestData, RsvpResponse, GuestWithRsvp, EventDetails } from "@/types";
 import fs from "fs";
 import path from "path";
-
-// Check if Vercel KV is configured
-const isKvConfigured = !!(process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN);
+import { kv, isKvConfigured } from "@/lib/kv";
 
 // Local file storage path for RSVPs (used when Vercel KV is not available)
 const LOCAL_RSVP_FILE = path.join(process.cwd(), "data", "rsvps.json");
@@ -72,7 +70,6 @@ export async function saveRsvp(
   };
 
   if (isKvConfigured) {
-    const { kv } = await import("@vercel/kv");
     await kv.set(`rsvp:${guestId}`, response);
   } else {
     // Use local file storage
@@ -87,7 +84,6 @@ export async function saveRsvp(
 // Get RSVP response (uses Vercel KV in production, local file in development)
 export async function getRsvp(guestId: string): Promise<RsvpResponse | null> {
   if (isKvConfigured) {
-    const { kv } = await import("@vercel/kv");
     return await kv.get<RsvpResponse>(`rsvp:${guestId}`);
   } else {
     // Use local file storage

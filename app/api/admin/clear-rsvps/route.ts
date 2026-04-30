@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { isAuthenticated } from "@/lib/auth";
-import { kv } from "@vercel/kv";
+import { kv } from "@/lib/kv";
 import { getGuests } from "@/lib/guests";
 
 export const dynamic = "force-dynamic";

@@ -1,12 +1,11 @@
 import type { PhotoMetadata } from "@/types";
 import fs from "fs";
 import path from "path";
+import { kv, isKvConfigured } from "@/lib/kv";
+import { deleteFromCloudinary, extractPublicId } from "@/lib/cloudinaryAdmin";
 
 // Check if Cloudinary is configured
 const isCloudinaryConfigured = !!process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-
-// Check if Vercel KV is configured (for metadata storage)
-const isKvConfigured = !!(process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN);
 
 // Local file storage paths (used when Vercel services are not available)
 const LOCAL_PHOTOS_FILE = path.join(process.cwd(), "data", "photos.json");
@@ -84,7 +83,6 @@ export async function savePhotoMetadata(
 
   // Save metadata
   if (isCloudinaryConfigured && isKvConfigured) {
-    const { kv } = await import("@vercel/kv");
     console.log("Saving photo metadata to KV:", id, metadata);
     await kv.set(`photo:${id}`, metadata);
     await kv.lpush("photo-ids", id);
@@ -134,7 +132,6 @@ export async function savePhoto(
 // Get all photos
 export async function getAllPhotos(): Promise<PhotoMetadata[]> {
   if (isCloudinaryConfigured && isKvConfigured) {
-    const { kv } = await import("@vercel/kv");
     const ids = await kv.lrange<string>("photo-ids", 0, -1);
     const photos: PhotoMetadata[] = [];
 
@@ -155,7 +152,6 @@ export async function getAllPhotos(): Promise<PhotoMetadata[]> {
 // Get a single photo by ID
 export async function getPhotoById(id: string): Promise<PhotoMetadata | null> {
   if (isCloudinaryConfigured && isKvConfigured) {
-    const { kv } = await import("@vercel/kv");
     return await kv.get<PhotoMetadata>(`photo:${id}`);
   } else {
     const photos = getLocalPhotos();
@@ -168,9 +164,13 @@ export async function deletePhoto(id: string): Promise<boolean> {
   const photo = await getPhotoById(id);
   if (!photo) return false;
 
-  // For Cloudinary, we don't delete the actual file (would need API secret)
-  // For local, delete the file
-  if (!isCloudinaryConfigured) {
+  // Delete the actual file: Cloudinary asset (via admin API) or local file
+  if (isCloudinaryConfigured && photo.blobUrl.includes("res.cloudinary.com")) {
+    const publicId = extractPublicId(photo.blobUrl);
+    if (publicId) {
+      await deleteFromCloudinary(publicId);
+    }
+  } else {
     const localPath = path.join(process.cwd(), "public", photo.blobUrl);
     try {
       if (fs.existsSync(localPath)) {
@@ -183,7 +183,6 @@ export async function deletePhoto(id: string): Promise<boolean> {
 
   // Delete metadata
   if (isCloudinaryConfigured && isKvConfigured) {
-    const { kv } = await import("@vercel/kv");
     await kv.del(`photo:${id}`);
     await kv.lrem("photo-ids", 1, id);
   } else {
@@ -198,7 +197,6 @@ export async function deletePhoto(id: string): Promise<boolean> {
 // Get photo count
 export async function getPhotoCount(): Promise<number> {
   if (isCloudinaryConfigured && isKvConfigured) {
-    const { kv } = await import("@vercel/kv");
     return await kv.llen("photo-ids");
   } else {
     return getLocalPhotos().length;
