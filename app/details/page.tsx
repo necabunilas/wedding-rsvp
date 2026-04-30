@@ -168,15 +168,15 @@ export default function DetailsPage() {
                 </li>
                 <li className="flex gap-3">
                   <span className="text-wedding-gold mt-0.5">•</span>
-                  <span>Kindly silence your phones and devices before entering the church.</span>
+                  <span>Kindly put your phones and devices on silent mode during the ceremony.</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-wedding-gold mt-0.5">•</span>
-                  <span>No flash photography or recording during the ceremony — please let our official photographer capture the moment.</span>
+                  <span>As much as possible, please let our official photographers and videographers capture the moment, especially during the ceremony. Live in the moment. Put the phone down :)</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-wedding-gold mt-0.5">•</span>
-                  <span>Please remain seated and respectfully quiet during the liturgy.</span>
+                  <span>To keep the ceremony intimate, children can go outside the church to run around and be children…with parental guidance, of course.</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-wedding-gold mt-0.5">•</span>
