@@ -57,7 +57,8 @@
     { "id": "guest-055", "name": "Christian Marc Demoral", "seatsAllocated": 2 },
     { "id": "guest-056", "name": "B Carla Yap", "seatsAllocated": 1 },
     { "id": "guest-057", "name": "Dax Christian Bagares", "seatsAllocated": 2 },
-    { "id": "guest-058", "name": "Mico Solon", "seatsAllocated": 2 }
+    { "id": "guest-058", "name": "Mico Solon", "seatsAllocated": 2 },
+    { "id": "guest-059", "name": "Stingo Noel", "seatsAllocated": 1 }
   ],
   "eventDetails": {
     "coupleName": "Nic & Ban",
