@@ -75,8 +75,11 @@ export default function Home() {
 
         {/* Search Card */}
         <div className="bg-white rounded-2xl shadow-xl p-8 md:p-10 mb-8 border border-wedding-gold/10">
-          <p className="text-wedding-gray text-sm mb-6">
+          <p className="text-wedding-gray text-sm mb-2">
             Enter your name to RSVP for the celebration
+          </p>
+          <p className="text-wedding-gold text-xs italic mb-6">
+            Please respond by May 20, 2026
           </p>
 
           <div className="relative">
