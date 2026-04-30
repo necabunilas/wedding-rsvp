@@ -143,7 +143,7 @@ export default function DetailsPage() {
               </div>
 
               <p className="italic font-bold text-wedding-wine text-sm mt-6">
-                For the ceremony, we kindly request you bring a cover-up if your dress is too revealing (as per the church&rsquo;s guidelines).
+                For the ceremony, we kindly request you bring a cover-up if your outfit is a little revealing (as per church&rsquo;s guidelines). We can flaunt our outfits freely during the reception :)
               </p>
             </section>
 
