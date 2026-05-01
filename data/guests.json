@@ -2,7 +2,7 @@
   "guests": [
     { "id": "guest-001", "name": "Theogenes Gayon", "seatsAllocated": 5 },
     { "id": "guest-002", "name": "Lalene Fernandez", "seatsAllocated": 4 },
-    { "id": "guest-003", "name": "Felix Gayon Sr.", "seatsAllocated": 5 },
+    { "id": "guest-003", "name": "Felix Gayon Jr.", "seatsAllocated": 5 },
     { "id": "guest-004", "name": "Mark Rowell Gayon", "seatsAllocated": 2 },
     { "id": "guest-005", "name": "Brenda Flor Eltanal", "seatsAllocated": 4 },
     { "id": "guest-006", "name": "Brigette Rubio", "seatsAllocated": 7 },
