@@ -1,7 +1,7 @@
 {
   "guests": [
     { "id": "guest-001", "name": "Theogenes Gayon", "seatsAllocated": 5 },
-    { "id": "guest-002", "name": "Lalene Fernandez", "seatsAllocated": 4 },
+    { "id": "guest-002", "name": "Fernandez Family", "seatsAllocated": 4 },
     { "id": "guest-003", "name": "Felix Gayon Jr.", "seatsAllocated": 5 },
     { "id": "guest-004", "name": "Mark Rowell Gayon", "seatsAllocated": 2 },
     { "id": "guest-005", "name": "Brenda Flor Eltanal", "seatsAllocated": 4 },
@@ -14,9 +14,9 @@
     { "id": "guest-012", "name": "Jan James Melendez", "seatsAllocated": 4 },
     { "id": "guest-013", "name": "Nadine Love Amogod", "seatsAllocated": 6 },
     { "id": "guest-014", "name": "Dana Lou Buna", "seatsAllocated": 4 },
-    { "id": "guest-015", "name": "Jude Alfred Sajulga", "seatsAllocated": 6 },
-    { "id": "guest-016", "name": "Golda Mae Lim", "seatsAllocated": 5 },
-    { "id": "guest-017", "name": "Loiza Allison Abes", "seatsAllocated": 5 },
+    { "id": "guest-015", "name": "Sajulga Family", "seatsAllocated": 6 },
+    { "id": "guest-016", "name": "Lim Family", "seatsAllocated": 5 },
+    { "id": "guest-017", "name": "Abes Family", "seatsAllocated": 5 },
     { "id": "guest-018", "name": "Anthony Juarez", "seatsAllocated": 1 },
     { "id": "guest-019", "name": "Honey Danna Ocaya", "seatsAllocated": 1 },
     { "id": "guest-020", "name": "Maria Aniana Durano", "seatsAllocated": 1 },
