@@ -60,7 +60,9 @@
     { "id": "guest-058", "name": "Mico Solon", "seatsAllocated": 2 },
     { "id": "guest-059", "name": "Stingo Noel", "seatsAllocated": 1 },
     { "id": "guest-060", "name": "Lilian Ramos", "seatsAllocated": 2 },
-    { "id": "guest-061", "name": "Fatima Villanueva", "seatsAllocated": 1 }
+    { "id": "guest-061", "name": "Fatima Villanueva", "seatsAllocated": 1 },
+    { "id": "guest-062", "name": "Sherr Elbereth Daniot", "seatsAllocated": 1 },
+    { "id": "guest-063", "name": "Reef Chazz Briones", "seatsAllocated": 2 }
   ],
   "eventDetails": {
     "coupleName": "Nic & Ban",
