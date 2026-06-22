@@ -15,3 +15,6 @@ export const GRID_THUMBNAIL = "w_400,h_400,c_fill,g_auto,q_auto,f_auto";
 
 // Lightbox / full-screen view — auto quality/format, no resize.
 export const LIGHTBOX_FULL = "q_auto,f_auto";
+
+// Original-resolution download — no quality/format transforms, forces attachment download.
+export const DOWNLOAD_ORIGINAL = "fl_attachment";
