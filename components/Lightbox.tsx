@@ -4,28 +4,60 @@ import { useEffect, useCallback, useRef, useState } from "react";
 import type { PhotoMetadata } from "@/types";
 import { withTransform, LIGHTBOX_FULL, DOWNLOAD_ORIGINAL } from "@/lib/cloudinary";
 
+function extFromName(name: string): string {
+  const dot = name.lastIndexOf(".");
+  return dot >= 0 ? name.slice(dot) : "";
+}
+
 async function saveOrSharePhoto(photo: PhotoMetadata): Promise<void> {
   const originalUrl = photo.blobUrl;
 
-  // On iOS Safari, the Web Share API with files opens the native share sheet,
-  // which includes "Save Image" — that one routes to the Photos library.
-  // The <a download> fallback lands in Files, which is what we're trying to avoid on mobile.
   try {
     const res = await fetch(originalUrl);
     const blob = await res.blob();
-    const file = new File([blob], photo.fileName, { type: blob.type || photo.mimeType });
+    const mime = blob.type || photo.mimeType;
+    const file = new File([blob], photo.fileName, { type: mime });
+
+    const isCoarsePointer =
+      typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches;
 
     const nav = navigator as Navigator & {
       canShare?: (data: ShareData) => boolean;
       share?: (data: ShareData) => Promise<void>;
     };
 
-    if (nav.canShare?.({ files: [file] }) && nav.share) {
+    // Mobile path: native share sheet → "Save Image" routes to the Photos library.
+    if (isCoarsePointer && nav.canShare?.({ files: [file] }) && nav.share) {
       await nav.share({ files: [file], title: photo.fileName });
       return;
     }
 
-    // Desktop / unsupported: trigger a normal download via blob URL.
+    // Desktop Chromium: ask the user where to save via the File System Access API.
+    const win = window as Window & {
+      showSaveFilePicker?: (opts: {
+        suggestedName?: string;
+        types?: Array<{ description?: string; accept: Record<string, string[]> }>;
+      }) => Promise<{
+        createWritable: () => Promise<{
+          write: (data: BlobPart) => Promise<void>;
+          close: () => Promise<void>;
+        }>;
+      }>;
+    };
+
+    if (typeof win.showSaveFilePicker === "function") {
+      const ext = extFromName(photo.fileName);
+      const handle = await win.showSaveFilePicker({
+        suggestedName: photo.fileName,
+        types: ext ? [{ description: "Image", accept: { [mime]: [ext] } }] : undefined,
+      });
+      const writable = await handle.createWritable();
+      await writable.write(blob);
+      await writable.close();
+      return;
+    }
+
+    // Safari / Firefox desktop: anchor-driven download into the default Downloads folder.
     const objectUrl = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = objectUrl;
@@ -35,8 +67,8 @@ async function saveOrSharePhoto(photo: PhotoMetadata): Promise<void> {
     document.body.removeChild(a);
     URL.revokeObjectURL(objectUrl);
   } catch (err) {
-    // User cancelled the share sheet, or fetch failed (CORS, network). Fall back to direct link.
-    if (err instanceof Error && err.name === "AbortError") return;
+    // User cancelled the share sheet or save dialog → silently bail.
+    if (err instanceof Error && (err.name === "AbortError" || err.name === "NotAllowedError")) return;
     window.open(withTransform(originalUrl, DOWNLOAD_ORIGINAL), "_blank");
   }
 }
