@@ -133,17 +133,15 @@ export async function savePhoto(
 export async function getAllPhotos(): Promise<PhotoMetadata[]> {
   if (isCloudinaryConfigured && isKvConfigured) {
     const ids = await kv.lrange<string>("photo-ids", 0, -1);
-    const photos: PhotoMetadata[] = [];
+    if (ids.length === 0) return [];
 
-    for (const id of ids) {
-      const photo = await kv.get<PhotoMetadata>(`photo:${id}`);
-      // Only include photos with valid URLs (skip old local /uploads/ URLs)
-      if (photo && photo.blobUrl.startsWith("http")) {
-        photos.push(photo);
-      }
-    }
+    const keys = ids.map((id) => `photo:${id}`);
+    const records = await kv.mget<PhotoMetadata[]>(...keys);
 
-    return photos;
+    // Only include photos with valid URLs (skip old local /uploads/ URLs)
+    return records.filter(
+      (photo): photo is PhotoMetadata => !!photo && photo.blobUrl.startsWith("http")
+    );
   } else {
     return getLocalPhotos();
   }

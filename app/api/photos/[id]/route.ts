@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { deletePhoto, getPhotoById } from "@/lib/photos";
 import { isAuthenticated } from "@/lib/auth";
 
@@ -36,6 +37,8 @@ export async function DELETE(
         { status: 500 }
       );
     }
+
+    revalidatePath("/photos");
 
     return NextResponse.json({
       success: true,

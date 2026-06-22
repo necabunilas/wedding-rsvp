@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import {
   savePhoto,
   savePhotoMetadata,
@@ -52,6 +53,8 @@ export async function POST(request: NextRequest) {
         fileSize || 0,
         mimeType || "image/jpeg"
       );
+
+      revalidatePath("/photos");
 
       return NextResponse.json({
         success: true,
@@ -112,6 +115,8 @@ export async function POST(request: NextRequest) {
       const photo = await savePhoto(file, uploaderName.trim());
       savedPhotos.push(photo);
     }
+
+    revalidatePath("/photos");
 
     return NextResponse.json({
       success: true,
