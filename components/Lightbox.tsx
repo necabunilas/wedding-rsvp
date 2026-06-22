@@ -4,6 +4,43 @@ import { useEffect, useCallback, useRef, useState } from "react";
 import type { PhotoMetadata } from "@/types";
 import { withTransform, LIGHTBOX_FULL, DOWNLOAD_ORIGINAL } from "@/lib/cloudinary";
 
+async function saveOrSharePhoto(photo: PhotoMetadata): Promise<void> {
+  const originalUrl = photo.blobUrl;
+
+  // On iOS Safari, the Web Share API with files opens the native share sheet,
+  // which includes "Save Image" — that one routes to the Photos library.
+  // The <a download> fallback lands in Files, which is what we're trying to avoid on mobile.
+  try {
+    const res = await fetch(originalUrl);
+    const blob = await res.blob();
+    const file = new File([blob], photo.fileName, { type: blob.type || photo.mimeType });
+
+    const nav = navigator as Navigator & {
+      canShare?: (data: ShareData) => boolean;
+      share?: (data: ShareData) => Promise<void>;
+    };
+
+    if (nav.canShare?.({ files: [file] }) && nav.share) {
+      await nav.share({ files: [file], title: photo.fileName });
+      return;
+    }
+
+    // Desktop / unsupported: trigger a normal download via blob URL.
+    const objectUrl = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = objectUrl;
+    a.download = photo.fileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(objectUrl);
+  } catch (err) {
+    // User cancelled the share sheet, or fetch failed (CORS, network). Fall back to direct link.
+    if (err instanceof Error && err.name === "AbortError") return;
+    window.open(withTransform(originalUrl, DOWNLOAD_ORIGINAL), "_blank");
+  }
+}
+
 interface LightboxProps {
   photos: PhotoMetadata[];
   currentIndex: number;
@@ -89,14 +126,16 @@ export default function Lightbox({
         <span className="text-2xl">×</span>
       </button>
 
-      {/* Download button */}
-      <a
-        href={withTransform(currentPhoto.blobUrl, DOWNLOAD_ORIGINAL)}
-        download={currentPhoto.fileName}
+      {/* Download / Save to Photos button */}
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          void saveOrSharePhoto(currentPhoto);
+        }}
         className="absolute top-4 right-16 w-10 h-10 flex items-center justify-center text-white/80 hover:text-white bg-white/10 hover:bg-white/20 rounded-full transition-all z-10"
-        aria-label="Download original"
-        title="Download original"
-        onClick={(e) => e.stopPropagation()}
+        aria-label="Save photo"
+        title="Save photo"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -113,7 +152,7 @@ export default function Lightbox({
           <polyline points="7 10 12 15 17 10" />
           <line x1="12" y1="15" x2="12" y2="3" />
         </svg>
-      </a>
+      </button>
 
       {/* Photo counter */}
       <div className="absolute top-4 left-4 text-white/80 text-sm bg-black/50 px-3 py-1 rounded-full">
